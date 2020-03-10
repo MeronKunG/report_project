@@ -1,0 +1,192 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}รายการ COD ทั้งหมด{% endblock %}
+
+{% block body %}
+	<style>
+		/* Simple CSS3 Fade-in-down Animation */
+		.fadeInDown {
+			-webkit-animation-name: fadeInDown;
+			animation-name: fadeInDown;
+			-webkit-animation-duration: 1s;
+			animation-duration: 1s;
+			-webkit-animation-fill-mode: both;
+			animation-fill-mode: both;
+		}
+
+		@-webkit-keyframes fadeInDown {
+			0% {
+				opacity: 0;
+				-webkit-transform: translate3d(0, -100%, 0);
+				transform: translate3d(0, -100%, 0);
+			}
+			100% {
+				opacity: 1;
+				-webkit-transform: none;
+				transform: none;
+			}
+		}
+
+		@keyframes fadeInDown {
+			0% {
+				opacity: 0;
+				-webkit-transform: translate3d(0, -100%, 0);
+				transform: translate3d(0, -100%, 0);
+			}
+			100% {
+				opacity: 1;
+				-webkit-transform: none;
+				transform: none;
+			}
+		}
+
+		.hiddenRow {
+			padding: 0 !important;
+		}
+
+		/* Simple CSS3 Fade-in Animation */
+		@-webkit-keyframes fadeIn {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+
+		@-moz-keyframes fadeIn {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+
+		.centered {
+			margin-top: 5%;
+		}
+
+		.button {
+			background-color: #1c87c9;
+			border: none;
+			color: white;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			cursor: pointer;
+		}
+
+		.bg-white {
+			background-color: #D8BFD8 !important;
+		}
+
+		.card-head {
+			background-color: #7d56b1;
+			color: #FFFFFF;
+		}
+
+		.bodyhead {
+			background-color: #E6E6FA;
+		}
+		th{
+			text-align: center;
+			background-color: #181A92;
+			color: #FFFFFF;
+			font-size: 18px;
+			padding-bottom: 5px !important;
+			padding-top: 5px !important;
+
+		}
+		.text-header{
+			color: #6c757d;
+			font-size: 20px;
+			text-align: center !important;
+
+		}
+
+	</style>
+	<div class="container fadeInDown centered">
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+				<a href="{{ path('report_cod') }}">
+					<button type="button"  class="btn btn-outline-secondary mb-2" name="test"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i>   &nbsp;back</button>
+				</a>
+
+				<div class="row" style="margin-top: 10px; margin-bottom: 13px;" >
+					<div class="col-sm-4 col-md-4"></div>
+					<div class="col-sm-4 col-md-4" style="text-align: center;"><b class="text-header" style="margin-top: 20px;"><i class="fa fa-address-card"></i> รายการ COD ทั้งหมด</b></div>
+					<div class="col-sm-4 col-md-4"></div>
+				</div>
+
+
+
+
+				<div class="row" style="margin-top: 10px">
+					<div class="col-sm-2 col-md-2"></div>
+					<div class="col-sm-10 col-md-10"  style="text-align: right;">
+						<a href="{{ path('cod_download_file', {'ref': app.request.query.get("ref"), 'type': 'excel'}) }}"><button class="btn btn-outline-success"><img src="{{ asset('images/excle.png') }}" height="20px"> Excel</button></a>
+						<a href="{{ path('cod_download_file', {'ref': app.request.query.get("ref"), 'type': 'csv' }) }}"><button class="btn btn-outline-primary"><img src="{{ asset('images/csv.png') }}" height="20px"> CSV</button></a>
+					</div>
+				</div>
+				<div class="table-responsive-md">
+					<table class="table table-striped table-bordered table-hover">
+						<thead>
+						<tr>
+							<th>TRACKING</th>
+							<th>ผู้รับ</th>
+							<th>ยอด</th>
+							<th>3%</th>
+							<th>ยอดโอน</th>
+							<th>ส่ง</th>
+							<th>ส่งสำเร็จ</th>
+							<th>โอนสำเร็จ</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% if cod_data is not empty %}
+							{% for cod in cod_data %}
+								<tr>
+									<td style="text-align: center">{{ cod.tracking }}</td>
+									<td style="text-align: left">{{ cod.ordername }} {{ cod.orderphoneno }}</td>
+									<td style="text-align: right">{{ cod.billAmt }}</td>
+									<td style="text-align: right">{{ (cod.codFee) | number_format(2, '.', ',') }}</td>
+									<td style="text-align: right">{{ (cod.transferAmt) | number_format(2, '.', ',') }}</td>
+									<td style="text-align: center">{{ cod.sd | date('d-m-Y') }}</td>
+									<td style="text-align: center">{{ cod.td | date('d-m-Y') }}</td>
+									<td style="text-align: center">{{ cod.tfd | date('d-m-Y') }}</td>
+								</tr>
+							{% endfor %}
+						{% else %}
+							<tr>
+								<td colspan="8" style="text-align: center">ไม่พบข้อมูล</td>
+							</tr>
+						{% endif %}
+						</tbody>
+						<tfoot style="background-color: #adb5bd">
+						<tr>
+							<td colspan="6" style="text-align: center"><b>ยอดทั้งหมด</b></td>
+							<td colspan="2" style="text-align: right"><b>{{ total.total  | number_format(2, '.', ',') }}</b></td>
+						</tr>
+						</tfoot>
+					</table>
+					{{ knp_pagination_render(cod_data) }}
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

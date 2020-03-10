@@ -1,0 +1,136 @@
+
+<title>{% block title %}เข้าสู่ระบบ | MemberMY945 Report{% endblock %}</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% block stylesheets %}
+	<link rel="dns-prefetch" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
+	<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
+	<link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css"/>
+	<link rel="icon" href="{{ asset('upload-icon.ico') }}">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="{{ asset('images/icons/favicon.ico') }}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('fonts/Linearicons-Free-v1.0.0/icon-font.min.css') }}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/animate/animate.css') }}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/css-hamburgers/hamburgers.min.css') }}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/animsition/css/animsition.min.css') }}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/select2/select2.min.css') }}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('vendor/daterangepicker/daterangepicker.css') }}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/util.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
+	<!--===============================================================================================-->
+
+{% endblock %}
+{% block body %}
+	<style>
+		html, body {
+			height: 100%;
+		}
+		.container-login100{
+			background-color: #181A92!important;
+		}
+
+	</style>
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-form-title" style="background-image: url(images/perfect-sales-proposal-open-graph.jpg);">
+					<span class="login100-form-title-1">
+						Member MY945 Report
+					</span>
+				</div>
+				{% for label, flashes in app.session.flashbag.all %}
+					{% if ( label == 'error' ) %}
+						<div class="alert alert-danger alert-dismissible fade show">
+							<div class="text-center">
+								<p>{{ flashes[0] }}</p>
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+				<form action="{{ path('app_login_auth') }}" method="post"  class="login100-form validate-form">
+					{% if error %}
+						<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+					{% endif %}
+					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+						<span class="label-input100" style="font-weight: bold">Username</span>
+						<input class="input100" type="text" value="{{ last_username }}" name="username" id="inputUsername" placeholder="Enter username">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
+						<span class="label-input100" style="font-weight: bold">Password</span>
+						<input class="input100" type="password" name="password" id="inputPassword" placeholder="Enter password">
+						<span class="focus-input100"></span>
+					</div>
+
+{#					<div class="flex-sb-m w-full p-b-30">#}
+{#						<div class="contact100-form-checkbox">#}
+{#							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">#}
+{#							<label class="label-checkbox100" for="ckb1">#}
+{#								Remember me#}
+{#							</label>#}
+{#						</div>#}
+{#					</div>#}
+
+					<div class="container" style="text-align: right" >
+						<button type="submit"  class="btn btn-success form-control" >
+							Login
+						</button>
+					</div>
+
+					<div class="wrap-input100 " style="margin-top: 30px;border-bottom-width: 0px;">
+						<span class="label-input100" style="font-weight: bold">Download</span>
+						<a href="https://play.google.com/store/apps/details?id=com.My945.Me&hl=th" target="_blank">
+							<img class="responsive" src="{{ asset('images/apptracking.png') }}" width="100%" >
+						</a>
+					</div>
+
+				</form>
+
+
+			</div>
+		</div>
+	</div>
+
+
+
+{% endblock %}
+{% block javascripts %}
+	<script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+{#	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"#}
+{#	        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"#}
+{#	        crossorigin="anonymous"></script>#}
+{#	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"#}
+{#	        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"#}
+{#	        crossorigin="anonymous"></script>#}
+	<!--===============================================================================================-->
+	<script src="{{ asset('vendor/jquery/jquery-3.2.1.min.js') }}"></script>
+	<!--===============================================================================================-->
+	<script src="{{ asset('vendor/animsition/js/animsition.min.js') }}"></script>
+	<!--===============================================================================================-->
+	<script src="{{ asset('vendor/bootstrap/js/popper.js') }}"></script>
+	<script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+	<!--===============================================================================================-->
+	<script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
+	<!--===============================================================================================-->
+	<script src="{{ asset('vendor/daterangepicker/moment.min.js') }}"></script>
+	<script src="{{ asset('vendor/daterangepicker/daterangepicker.js') }}"></script>
+	<!--===============================================================================================-->
+	<script src="{{ asset('vendor/countdowntime/countdowntime.js') }}"></script>
+	<!--===============================================================================================-->
+	<script src="{{ asset('js/main.js') }}"></script>
+
+{% endblock %}

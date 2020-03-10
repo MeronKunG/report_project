@@ -1,0 +1,891 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}รายงานข้อมูลทั้งหมด{% endblock %}
+
+{% block body %}
+    <style>
+        /* Simple CSS3 Fade-in-down Animation */
+        .fadeInDown {
+            -webkit-animation-name: fadeInDown;
+            animation-name: fadeInDown;
+            -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+
+        @-webkit-keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                -webkit-transform: translate3d(0, -100%, 0);
+                transform: translate3d(0, -100%, 0);
+            }
+            100% {
+                opacity: 1;
+                -webkit-transform: none;
+                transform: none;
+            }
+        }
+
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                -webkit-transform: translate3d(0, -100%, 0);
+                transform: translate3d(0, -100%, 0);
+            }
+            100% {
+                opacity: 1;
+                -webkit-transform: none;
+                transform: none;
+            }
+        }
+
+        .hiddenRow {
+            padding: 0 !important;
+        }
+
+        /* Simple CSS3 Fade-in Animation */
+        @-webkit-keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @-moz-keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .centered {
+            margin-top: 5%;
+        }
+
+        .button {
+            background-color: #1c87c9;
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .bg-white {
+            background-color: #D8BFD8 !important;
+        }
+
+        .card-head {
+            background-color: #7d56b1;
+            color: #FFFFFF;
+        }
+
+        .bodyhead {
+            background-color: #E6E6FA;
+        }
+
+        .text-header {
+            color: #6c757d;
+            font-size: 20px;
+
+        }
+
+        .type-cod {
+            background-color: white;
+            border: solid 2px green;
+            height: 25px;
+            width: 70px;
+            color: green;
+            border-radius: 9px;
+            margin-top: 8px;
+
+
+        }
+
+        .type-nor {
+            background-color: white;
+            border: solid 2px #1e90ff;
+            height: 25px;
+            width: 70px;
+            color: #1e90ff;
+            border-radius: 9px;
+            margin-top: 8px;
+        }
+
+        .status-cancel {
+            background-color: #E15050;
+            height: 35px;
+            width: 100px;
+            color: black;
+            border-radius: 12px;
+            padding-top: 6px;
+        }
+
+        .status-waitingmoney {
+            background-color: #6699AA;
+            height: 35px;
+            width: 100px;
+            color: black;
+            border-radius: 12px;
+            padding-top: 6px;
+        }
+
+        .status-payment {
+            background-color: #8dcffd;
+            height: 35px;
+            width: 100px;
+            color: black;
+            border-radius: 12px;
+            padding-top: 6px;
+
+        }
+
+        .status-delivered {
+            background-color: #eac248;
+            height: 35px;
+            width: 100px;
+            color: black;
+            border-radius: 12px;
+            padding-top: 6px;
+
+        }
+
+        .status-arrive {
+            background-color: #96d677;
+            height: 35px;
+            width: 100px;
+            color: black;
+            border-radius: 12px;
+            padding-top: 6px;
+
+        }
+
+        .status-return {
+            background-color: #a4a2b4;
+            height: 35px;
+            width: 100px;
+            color: black;
+            border-radius: 12px;
+            padding-top: 6px;
+        }
+
+        .area-upc {
+            background-color: #A0522D;
+            height: 25px;
+            width: 60px;
+            color: #FFFFFF;
+            border-radius: 5px;
+
+
+        }
+
+        .area-bkk {
+            background-color: #ECAB53;
+            height: 25px;
+            width: 60px;
+            color: #FFFFFF;
+            border-radius: 5px;
+
+
+        }
+
+
+        .head-size {
+            color: #FFFFFF;
+            font-size: 18px;
+            padding-bottom: 5px !important;
+            padding-top: 5px !important;
+            text-align: center;
+        }
+
+        th {
+            text-align: center;
+            background-color: #181A92;
+            color: #FFFFFF;
+            font-size: 18px;
+            padding-bottom: 5px !important;
+            padding-top: 5px !important;
+        }
+
+        .scrollmenu {
+            margin-top: 20px;
+            display: inline-block;
+            overflow-x: auto;
+            white-space: nowrap;
+            width: 100%;
+            /*background-color: #007bff;*/
+            padding: 10px;
+        }
+
+        .box {
+            display: inline-block;
+            /*background-color: #34ce57;*/
+            width: 110px;
+            padding: 0px;
+            text-align: left;
+        }
+
+        .card-radius {
+            border-radius: 15px;
+
+        }
+
+        .card-header {
+            background-color: #181A92 !important;
+
+        }
+
+        .head-size {
+            font-size: 18px;
+            color: white;
+        }
+
+        .card-header:first-child {
+
+            border-radius: 15px 15px 0px 0px !important;
+        }
+
+        .card-body {
+            background-color: lightgrey;
+            border-radius: 0px 0px 15px 15px !important;
+        }
+
+        /*input[type="date"]:before {*/
+        /*    content: attr(placeholder) !important;*/
+        /*    color: #aaa;*/
+        /*    margin-right: 0.5em;*/
+        /*}*/
+
+        /*input[type="date"]:focus:before,*/
+        /*input[type="date"]:valid:before {*/
+        /*    content: "";*/
+        /*}*/
+
+
+    </style>
+
+
+    <div class="container fadeInDown centered">
+        <div class="justify-content-center">
+
+            <!--Carousel Wrapper-->
+            <div class="scrollmenu">
+
+                {% if parcel_data is not empty %}
+                    <div class="box">
+                        <div class="card card-radius" style="text-align: center">
+                            <div class="card-header card-head">
+                                <b class="head-size">MINI</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'MINI' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.mini) | number_format(0, '.', ',') }}</a>
+                                {#							<strong style="font-size: 18px">0</strong>#}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box">
+
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">MINI+</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'MINI+' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.miniPlus) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box">
+
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">S</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'S' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.s) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box">
+
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">S+</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'S+' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.sPlus) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">M</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'M' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.m) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">M1</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'M1' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.m1) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">M+</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'M+' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.mPlus) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box">
+
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">L</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'L' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.l) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="box">
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">L+</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'L+' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.lPlus) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">XL</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'XL' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.xl) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="box">
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">XL+</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'XL+' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.xlPlus) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">XXL</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'XXL' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.xxl) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">3XL</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': '3XL' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.txl) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">KS40</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'KS40' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.ks40) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+                        <div class="card card-radius " style="text-align: center">
+                            <div class="card-header">
+                                <b class="head-size">KS95</b>
+                            </div>
+                            <div class="card-body ">
+                                <a href="{{ path('report_all', {'size': 'KS95' }) }}"
+                                   style="font-size: 18px; color: green;">{{ (parcel_data.ks95) | number_format(0, '.', ',') }}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <b class="head-size">ไม่พบข้อมูล</b>
+                    </div>
+                {% endif %}
+            </div>
+            <!--/.Carousel Wrapper-->
+
+        </div>
+
+
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+
+
+                <div class="row" style="margin-top: 20px;  margin-bottom: 20px;">
+                    <div class="col-sm-3 col-md-3"></div>
+                    <div class="col-sm-6 col-md-6" style="text-align: center;"><img src="{{ asset('images/note.png') }}"
+                                                                                    height="40px"><b
+                                class="text-header"> &nbsp;ข้อมูลทั้งหมด</b></div>
+                    <div class="col-sm-3 col-md-3"></div>
+                </div>
+
+                {% for label, flashes in app.session.flashbag.all %}
+                    {% if ( label == 'error' ) %}
+                        <div class="alert alert-danger alert-dismissible fade show mt-2">
+                            <div class="text-center">
+                                <p>{{ flashes[0] }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+
+                <div class="row">
+                    <div class="col-xl-4 col-sm-12 col-md-4 col-lg-4" style="margin-bottom: 4px;"><a
+                                class="btn btn-info form-control"
+                                href="{{ path('report_all', {'status': 'ยกเลิกรายการ' }) }}">ยกเลิก
+                            ({{ countStatus.status.ยกเลิกรายการ }})</a></div>
+                    <div class="col-xl-4 col-sm-12 col-md-4 col-lg-4" style="margin-bottom: 4px;"><a
+                                class="btn btn-info form-control"
+                                href="{{ path('report_all', {'status': 'รอชำระเงิน' }) }}">รอชำระ
+                            ({{ countStatus.status.รอชำระเงิน }})</a></div>
+                    <div class="col-xl-4 col-sm-12 col-md-4 col-lg-4" style="margin-bottom: 4px;"><a
+                                class="btn btn-info form-control"
+                                href="{{ path('report_all', {'status': 'ชำระเงินแล้ว' }) }}">ชำระแล้ว
+                            ({{ countStatus.status.ชำระเงินแล้ว }})</a></div>
+                    <div class="col-xl-4 col-sm-12 col-md-4 col-lg-4" style="margin-bottom: 4px;"><a
+                                class="btn btn-info form-control"
+                                href="{{ path('report_all', {'status': 'จัดส่งแล้ว' }) }}">กำลังจัดส่ง
+                            ({{ countStatus.status.จัดส่งแล้ว }})</a></div>
+                    <div class="col-xl-4 col-sm-12 col-md-4 col-lg-4" style="margin-bottom: 4px;"><a
+                                class="btn btn-info form-control"
+                                href="{{ path('report_all', {'status': 'สินค้าถึงปลายทาง' }) }}">ส่งสำเร็จ
+                            ({{ countStatus.status.สินค้าถึงปลายทาง }})</a></div>
+                    <div class="col-xl-4 col-sm-12 col-md-4 col-lg-4" style="margin-bottom: 4px;"><a
+                                class="btn btn-info form-control"
+                                href="{{ path('report_all', {'status': 'สินค้าตีกลับ' }) }}">ตีกลับ
+                            ({{ countStatus.status.สินค้าตีกลับ }})</a></div>
+                </div>
+                <div class="row" style="text-align: center;">
+                    <div class="col-xl-12 col-sm-4 col-md-4 col-lg-4"></div>
+                    <div class="col-xl-12 col-sm-12 col-md-12 col-lg-4"><a class="btn btn-info form-control"
+                                                                           href="{{ path('report_all') }}">ทั้งหมด</a>
+                    </div>
+                    <div class="col-xl-12 col-sm-4 col-md-4 col-lg-4"></div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xl-3 col-sm-3 col-md-3 col-lg-3"></div>
+                    <div class="col-xl-2 col-sm-2 col-md-2 col-lg-2"></div>
+                    <div class="col-xl-7 col-sm-7 col-md-7 col-lg-7" style="text-align: right;">
+                        <form action="">
+                            {% if app.request.query.get("filter") is not null %}
+                                <input type="hidden" name="filter" value="{{ app.request.query.get("filter") }}">
+                            {% elseif app.request.query.get("size") is not null %}
+                                <input type="hidden" name="size" value="{{ app.request.query.get("size") }}">
+                            {% elseif app.request.query.get("status") is not null %}
+                                <input type="hidden" name="status" value="{{ app.request.query.get("status") }}">
+                            {% endif %}
+
+
+                            <div class="row" style="margin-top: 20px;">
+                                <div class="col-sm-6"></div>
+                                <div class="col-sm-5" style="text-align: right;padding-right: 0px;">
+                                    <input class="form-control" type="text" placeholder="แทรคกิ้ง/เบอร์โทร/ผู้รับ"
+                                           name="search">
+                                </div>
+                                <div class="col-sm-1" style="padding-left: 0px;padding-right: 0px;">
+                                    <button class="btn btn-light form-control" type="submit"><i class="fa fa-search"
+                                                                                                aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <hr style="margin-bottom: 10px;margin-top: 10px; border: 1px solid grey;">
+
+                <div class="row">
+                    <div class="col-xl-3 col-sm-3 col-md-3 col-lg-3"></div>
+                    <div class="col-xl-2 col-sm-2 col-md-2 col-lg-2"></div>
+                    <div class="col-xl-7 col-sm-7 col-md-7 col-lg-7" style="text-align: right;">
+                        <form action="">
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-4"
+                                     style="text-align: right;padding-right: 0px;border-bottom-width: 10px;margin-bottom: 10px;">
+                                    <input placeholder="ค้นหาวันที่จัดส่ง" class="form-control" type="text"
+                                           name="search_date" onfocus="(this.type='date')"
+                                           onblur="(this.type='text')" id="date">
+                                </div>
+                                <div class="col-sm-4"
+                                     style="text-align: right;padding-right: 0px;border-bottom-width: 10px;margin-bottom: 10px;">
+                                    <input placeholder="ถึงวันที่" class="form-control" type="text"
+                                           name="date_end" onfocus="(this.type='date')"
+                                           onblur="(this.type='text')" id="date_end">
+                                </div>
+                                <div class="col-sm-1" style="padding-left: 0px;padding-right: 0px;">
+                                    <button class="btn btn-light form-control" type="submit"><i class="fa fa-search"
+                                                                                                aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xl-3 col-sm-3 col-md-3 col-lg-3"></div>
+                    <div class="col-xl-2 col-sm-2 col-md-2 col-lg-2"></div>
+                    <div class="col-xl-7 col-sm-7 col-md-7 col-lg-7" style="text-align: right;">
+                        <button class="btn btn-outline-success" data-toggle="modal" data-target="#excel"><img
+                                    src="{{ asset('images/excle.png') }}"
+                                    height="20px"> Excel
+                        </button>
+                        <button class="btn btn-outline-primary" data-toggle="modal" data-target="#csv"><img
+                                    src="{{ asset('images/csv.png') }}"
+                                    height="20px"> CSV
+                        </button>
+
+
+                    </div>
+                </div>
+
+
+                <div class="table-responsive-md mt-2">
+
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>วันที่จัดส่ง</th>
+                            <th>แทรคกิ้ง</th>
+                            <th>ผู้รับ</th>
+                            <th>COD/NOR</th>
+                            <th>สถานะ</th>
+                            <th>พื้นที่</th>
+                            <th>ไซส์</th>
+                            {% if allparcel_data[0].sizePrice is defined %}
+                                <th>ค่าส่ง</th>
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if allparcel_data is not empty %}
+                            {% for k, parcel in allparcel_data %}
+                                <tr data-toggle="collapse" data-target="#{{ k }}"
+                                    class="accordion-toggle">
+                                    {% if parcel.sendmaildate is not null %}
+                                        <td style="text-align: center;">{{ parcel.sendmaildate | date('d-m-Y') }}</td>
+                                    {% else %}
+                                        <td style="text-align: center;"></td>
+                                    {% endif %}
+                                    <td style="text-align: center;"><a
+                                                href="https://www.945info.com/index.php?ref={{ parcel.mailcode }}">{{ parcel.mailcode }}</a>
+                                    </td>
+                                    <td style="text-align: left;">{{ parcel.recipientInfo }}</td>
+                                    {% if parcel.transportType == 'cod' %}
+                                        <td style="text-align: center;"><label
+                                                    class="type-cod">COD</label></td>
+                                    {% else %}
+                                        <td style="text-align: center;"><label
+                                                    class="type-nor">NORMAL</label></td>
+                                    {% endif %}
+                                    {% if parcel.statusNameTh == 'ยกเลิกรายการ' %}
+                                        <td style="text-align: center;"><label class="status-cancel">ยกเลิก</label></td>
+                                    {% elseif parcel.statusNameTh == 'รอชำระเงิน' %}
+                                        <td style="text-align: center;"><label
+                                                    class="status-waitingmoney">รอชำระ</label></td>
+                                    {% elseif parcel.statusNameTh == 'ชำระเงินแล้ว' %}
+                                        <td style="text-align: center;"><label class="status-payment">ชำระแล้ว</label>
+                                        </td>
+                                    {% elseif parcel.statusNameTh == 'จัดส่งแล้ว' %}
+                                        <td style="text-align: center;"><label
+                                                    class="status-delivered">กำลังจัดส่ง</label></td>
+                                    {% elseif parcel.statusNameTh == 'สินค้าถึงปลายทาง' %}
+                                        <td style="text-align: center;"><label class="status-arrive">ส่งสำเร็จ</label>
+                                        </td>
+                                    {% elseif parcel.statusNameTh == 'สินค้าตีกลับ' %}
+                                        <td style="text-align: center;"><label class="status-return">ตีกลับ</label></td>
+                                    {% endif %}
+                                    <td style="text-align: center;">{{ parcel.area }}</td>
+                                    <td style="text-align: center;">{{ parcel.sizeName }}</td>
+                                    {% if parcel.sizePrice is defined %}
+                                        <td style="text-align: right;">{{ (parcel.sizePrice) | number_format(0, '.', ',') }}</td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td colspan="12" class="hiddenRow">
+                                        <div class="accordian-body collapse" id="{{ k }}">
+                                            <div class="alert alert-info"
+                                                 style="margin-top: 20px;margin-left: 15px; margin-right: 15px;"
+                                                 role="alert">
+                                                รายการสินค้า :
+                                                <b>{% if parcel.ffmProduct != null %}
+                                                        <ul>
+                                                            {% for p in parcel.ffmProduct %}
+                                                                <li>{{ p.sizeName }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% else %}
+                                                        <b> - </b>
+                                                    {% endif %}</b><br>ที่อยู่ :
+                                                <b>{{ parcel.name }}</b><br>ส่งสำเร็จ :
+                                                {% if parcel.transactiondate != null %}
+                                                    <b>{{ parcel.transactiondate | date('d-m-Y') }}</b>
+                                                {% else %}
+                                                    <b> - </b>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="12" style="text-align: center">ไม่พบข้อมูล</td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                    {{ knp_pagination_render(allparcel_data) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="csv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Export For CSV</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ path('download_file') }}" method="get">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">เลือกวันที่ ตั้งแต่</label>
+                            <input class="form-control" name="startDate" type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">ถึง</label>
+                            <input class="form-control" name="endDate" type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">เลือกสถานะ</label>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input selectAll" type="checkbox"
+                                           aria-label="เลือกทั้งหมด"> เลือกทั้งหมด
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="status[]" value="ยกเลิกรายการ"
+                                           aria-label="ยกเลิกรายการ"> ยกเลิก
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="status[]" value="รอชำระเงิน"
+                                           aria-label="รอชำระเงิน"> รอชำระ
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="status[]" value="ชำระเงินแล้ว"
+                                           aria-label="ชำระเงินแล้ว"> ชำระแล้ว
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="status[]" value="จัดส่งแล้ว"
+                                           aria-label="จัดส่งแล้ว"> กำลังจัดส่ง
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="status[]"
+                                           value="สินค้าถึงปลายทาง" aria-label="สินค้าถึงปลายทาง"> ส่งสำเร็จ
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="status[]" value="สินค้าตีกลับ"
+                                           aria-label="สินค้าตีกลับ"> ตีกลับ
+                                </label>
+                            </div>
+                        </div>
+                        <input type="hidden" name="type" value="csv">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Export</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="excel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Export For Excel</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ path('download_file') }}" method="get">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">เลือกวันที่ ตั้งแต่</label>
+                            <input class="form-control" name="startDate" type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">ถึง</label>
+                            <input class="form-control" name="endDate" type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">เลือกสถานะ</label>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input selectAll" type="checkbox"
+                                           aria-label="เลือกทั้งหมด"> เลือกทั้งหมด
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="status[]" value="ยกเลิกรายการ"
+                                           aria-label="..."> ยกเลิก
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="status[]" value="รอชำระเงิน"
+                                           aria-label="..."> รอชำระ
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="status[]" value="ชำระเงินแล้ว"
+                                           aria-label="..."> ชำระแล้ว
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="status[]" value="จัดส่งแล้ว"
+                                           aria-label="..."> กำลังจัดส่ง
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="status[]"
+                                           value="สินค้าถึงปลายทาง" aria-label="..."> ส่งสำเร็จ
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="status[]" value="สินค้าตีกลับ"
+                                           aria-label="..."> ตีกลับ
+                                </label>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="type" value="excel">
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Export</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(".selectAll").click(function () {
+            $("input[type=checkbox]").prop('checked', $(this).prop('checked'));
+
+        });
+    </script>
+{% endblock %}
